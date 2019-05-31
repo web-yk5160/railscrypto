@@ -1,0 +1,61 @@
+
+<h1>Listing Virtuals</h1>
+<br />
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Currrent Price</th>
+      <th>Rank</th>
+      <th>1 HR %</th>
+      <th>24 HR %</th>
+      <th>7 day %</th>
+      <th>Total Current Value</th>
+      <th>Total Paid</th>
+      <th>Profit / Loss</th>
+      <th>Cost Paid Per</th>
+      <th>Amount Owned</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @virtuals.each do |virtual| %>
+    <% if virtual.user_id == current_user.id %>
+      <% if virtual.symbol %>
+        <% virtual.symbol = virtual.symbol.upcase %>
+      <% end %>
+      <tr>
+        <% for x in @lookup_virtual  %>
+            <% if virtual.symbol == x["symbol"] %>
+              <td><%= link_to x["name"], virtual %></td>
+              <!-- <td><%= number_to_currency(x["price_usd"]) %></td> -->
+              <td>$<%= x["price_usd"] %></td>
+              <td><%= x["rank"] %></td>
+
+              <td><%= x["percent_change_1h"] %>%</td>
+              <td><%= x["percent_change_24h"] %>%</td>
+              <td><%= x["percent_change_7d"] %>%</td>
+              <td><%= x["price_usd"].to_d * virtual.amount_owned %></td>
+              <td>$<%= virtual.cost_per * virtual.amount_owned %></td>
+              <td>$<%= (x["price_usd"].to_d * virtual.amount_owned) - (virtual.cost_per * virtual.amount_owned) %></td>
+              <td>$<% @profit_loss +=  (x["price_usd"].to_d * virtual.amount_owned) - (virtual.cost_per * virtual.amount_owned) %></td>
+            <% end %>
+        <% end %>
+
+        <td>$<%= virtual.cost_per %></td>
+        <td><%= virtual.amount_owned %></td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<br>
+
+<strong>Portfolio Profit/Loss: </strong><%= number_to_currency(@profit_loss) %>
+<br />
+<br />
+
+<%= link_to 'New Virtual', new_virtual_path, class: "btn btn-default" %>

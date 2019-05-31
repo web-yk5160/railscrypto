@@ -1,0 +1,46 @@
+<% for x in @show_virtual %>
+    <% if @virtual.symbol.upcase == x["symbol"] %>
+      <% virtual_name = x["name"] %>
+      <% virtual_price = x["price_usd"] %>
+      <% virtual_rank = x["rank"] %>
+    <% end %>
+<% end %>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= virtual_name %></h3>
+  </div>
+  <div class="panel-body">
+
+    <h1><%= @virtual.symbol.upcase %></h1>
+    <br /><br />
+
+<p>
+  <strong>Current Price: </strong> <%= number_to_currency(virtual_price) %>
+</p>
+
+
+<p>
+  <strong>Rank: </strong> <%= virtual_rank %>
+</p>
+
+<p>
+  <strong>Cost per:</strong>
+  <%= @virtual.cost_per %>
+</p>
+
+<p>
+  <strong>Amount owned:</strong>
+  <%= @virtual.amount_owned %>
+</p>
+  </div>
+
+  </div>
+  <div class="panel-footer">
+    <%= link_to 'Edit', edit_virtual_path(@virtual) %> |
+    <%= link_to 'Delete Crypto Currency', virtual_path(@virtual), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Back', virtuals_path %>
+  </div>
+</div>
+</div>
